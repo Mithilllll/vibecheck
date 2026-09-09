@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Upload a visual, define the vibe you want it to communicate, and get audience-style feedback, alignment scoring, and concrete suggestions to improve it.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+  process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
   openGraph: {
     title: "VibeCheck",
