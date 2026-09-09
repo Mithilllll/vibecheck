@@ -1,0 +1,91 @@
+// VibeCheck Prisma schema
+// PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  projects     Project[]
+
+  @@index([email])
+}
+
+model Project {
+  id               String   @id @default(cuid())
+  userId           String
+  title            String
+  intendedVibe     String
+  targetAudience   String?
+  platformContext  String?
+  captionContext   String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mediaAssets      MediaAsset[]
+  analysisResults  AnalysisResult[]
+
+  @@index([userId])
+  @@index([userId, createdAt])
+}
+
+model MediaAsset {
+  id         String    @id @default(cuid())
+  projectId  String
+  type       String     // IMAGE | VIDEO | AUDIO
+  fileName   String
+  mimeType   String
+  filePath   String    // path / key returned by the storage provider
+  fileUrl    String    // URL the browser can fetch
+  sizeBytes  Int       @default(0)
+  createdAt  DateTime  @default(now())
+
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([projectId, type])
+}
+
+model AnalysisResult {
+  id                      String   @id @default(cuid())
+  projectId               String
+  score                   Int
+  verdict                 String
+  intendedVibe            String
+  perceivedVibe           String
+  insightBullets          String   // JSON string
+  personaReactions        String   // JSON string
+  improvementSuggestions  String   // JSON string
+  trendSuggestions        String   // JSON string
+  rawModelResponse        String?  // JSON string
+  createdAt               DateTime @default(now())
+
+  project                 Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([projectId, createdAt])
+}
+model AnalysisUsage {
+  id          String   @id @default(cuid())
+  scope       String
+  usageDate   String
+  count       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([scope, usageDate])
+  @@index([usageDate])
+}

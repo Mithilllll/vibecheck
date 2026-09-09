@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html {
+  color-scheme: light;
+}
+
+html,
+body {
+  background-color: #f4ede5;
+  color: #3f4a59;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #3f4a59;
+  letter-spacing: -0.02em;
+}
+
+/* Text selection */
+::selection {
+  background: rgba(200, 199, 215, 0.65);
+  color: #3f4a59;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4ede5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c8c7d7;
+  border-radius: 8px;
+  border: 2px solid #f4ede5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8897aa;
+}
+
+/* Form autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: #3f4a59;
+  -webkit-box-shadow: 0 0 0px 1000px #edecf2 inset;
+  caret-color: #3f4a59;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Soft page texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(216, 226, 235, 0.55),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(209, 232, 238, 0.45),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(200, 199, 215, 0.3),
+      transparent 30%
+    );
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-6 md:px-8;
+  }
+
+  .glass-card {
+    @apply rounded-2xl border border-border-default bg-bg-raised/80 backdrop-blur-sm shadow-card;
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-border {
+    position: relative;
+    background-clip: padding-box;
+  }
+
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+
+    background: linear-gradient(
+      135deg,
+      rgba(216, 226, 235, 0.95) 0%,
+      rgba(200, 199, 215, 0.8) 40%,
+      rgba(209, 232, 238, 0.8) 75%,
+      rgba(136, 151, 170, 0.65) 100%
+    );
+
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
